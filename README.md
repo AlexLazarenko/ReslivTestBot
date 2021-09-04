@@ -13,6 +13,10 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
+## Bot name and token
+* 	Bot name is "@AlexLazarenkoTestBot"
+* 	Bot token is "1965463710:AAFI0pLrJh0f7JuHYBiu-wXmG6Dyuae7WzU"
+
 ## Endpoints
 
 |Method| 	Url		     | 	Description     |
