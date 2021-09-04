@@ -1,5 +1,6 @@
 # ReslivTestBot
-Application that service telegram bot. This bot can send to you information about city, whose name you send to him. Information stored in a database managed by REST API (Swagger).
+Application that service telegram bot. This bot can send to you information about city, whose name you send to him. Information stored in a database managed by REST API (Swagger). Available cities now is Minsk, Grodno, Vitebsk, Gomel.
+
 ## Built With
 * 	[Maven](https://maven.apache.org/) - Dependency Management
 * 	[OpenJDK](http://jdk.java.net/archive/) - Java™ Platform, Standard Edition Development Kit 
