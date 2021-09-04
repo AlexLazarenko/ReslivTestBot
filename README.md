@@ -27,4 +27,4 @@ mvn spring-boot:run
 
 Screenshot
 
-![List APIs](img/list.jpg "List API")
+![List APIs](image/list.jpg "List API")
