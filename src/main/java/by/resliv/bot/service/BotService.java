@@ -24,6 +24,8 @@ public class BotService extends TelegramLongPollingBot {
     private static final String BOT_TOKEN = "1965463710:AAFI0pLrJh0f7JuHYBiu-wXmG6Dyuae7WzU";
 
     private static final int MAX_CITIES = 100;
+    
+    private static final String NO_SUCH_CITY = "Sorry! No such city in our base!";
 
     @Autowired
     CityService service = new CityService();
@@ -52,7 +54,7 @@ public class BotService extends TelegramLongPollingBot {
                     if (thatCity.isPresent()) {
                         execute(SendMessage.builder().chatId(message.getChatId().toString()).text(thatCity.get().getText()).build());
                     } else {
-                        execute(SendMessage.builder().chatId(message.getChatId().toString()).text("Sorry! No such city in our base!").build());
+                        execute(SendMessage.builder().chatId(message.getChatId().toString()).text(NO_SUCH_CITY).build());
                     }
                 } catch (TelegramApiException e) {
                     logger.error(e);
