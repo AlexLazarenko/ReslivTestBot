@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -23,12 +22,10 @@ public class BotService extends TelegramLongPollingBot {
 
     private static final String BOT_TOKEN = "1965463710:AAFI0pLrJh0f7JuHYBiu-wXmG6Dyuae7WzU";
 
-    private static final int MAX_CITIES = 100;
-    
     private static final String NO_SUCH_CITY = "Sorry! No such city in our base!";
 
     @Autowired
-    CityService service = new CityService();
+    CityService service;
 
     @Override
     public String getBotUsername() {
@@ -42,14 +39,12 @@ public class BotService extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        List<City> cityList;
         Optional<City> thatCity = Optional.empty();
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            if (message.hasText()) {
-                cityList = service.getAllCities(MAX_CITIES);
+            if (message.hasText()&&!message.isCommand()) {
                 String text = message.getText();
-                thatCity = findCity(cityList, text);
+                thatCity = service.findByCityName(text);
                 try {
                     if (thatCity.isPresent()) {
                         execute(SendMessage.builder().chatId(message.getChatId().toString()).text(thatCity.get().getText()).build());
@@ -63,13 +58,4 @@ public class BotService extends TelegramLongPollingBot {
         }
     }
 
-    private Optional<City> findCity(List<City> cityList, String text) {
-        Optional<City> thatCity = Optional.empty();
-        for (City city : cityList) {
-            if (text.equals(city.getName())) {
-                thatCity = Optional.of(city);
-            }
-        }
-        return thatCity;
-    }
 }

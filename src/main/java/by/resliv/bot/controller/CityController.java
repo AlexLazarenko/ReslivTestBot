@@ -37,11 +37,13 @@ public class CityController {
     @PutMapping("/city/{id}")
     public void updateCity(@PathVariable int id,
                            @RequestBody City city) {
+        service.updateCity(id, city);
         logger.info("Update city ID=" + id + " " + city);
     }
 
     @DeleteMapping("/city/{id}")
     public void deleteCity(@PathVariable int id) {
+        service.deleteCity(id);
         logger.info("Delete city ID=" + id);
     }
 }

@@ -11,7 +11,9 @@ public class City implements Serializable {
     @GenericGenerator(name = "cityId", strategy = "increment")
 
     private Long cityId;
+    @Column
     private String name;
+    @Column
     private String text;
 
     public City() {
