@@ -1,5 +1,8 @@
 package by.resliv.bot;
 
+import by.resliv.bot.controller.CityController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -8,11 +11,13 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @SpringBootApplication
 public class MyBootApplication {
+    private static final Logger logger = LogManager.getLogger(CityController.class);
+
     public static void main(String[] args) {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         SpringApplication.run(MyBootApplication.class);
     }

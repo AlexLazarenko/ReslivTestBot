@@ -30,19 +30,32 @@ public class CityController {
     @GetMapping("/city/{cityId}")
     public ResponseEntity<?> getCity(@PathVariable("cityId") int cityId) {
         ResponseEntity<?> responseEntity;
-        if (service.isExists(cityId)){
-        City city = service.getCityById(cityId);
+        if (service.isExists(cityId)) {
+            City city = service.getCityById(cityId);
             responseEntity = new ResponseEntity<>(city, HttpStatus.OK);
         } else {
-            responseEntity = new ResponseEntity<>("City with id=" + cityId + " not exist", HttpStatus.NOT_FOUND);
+            responseEntity = new ResponseEntity<>("City with id=" + cityId + " not exists", HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }
 
     @PostMapping("/city")
-    public void createNewCity(@RequestBody City newCity) {
-        service.createNewCity(newCity);
-        logger.info("New city: " + newCity);
+    public ResponseEntity<?> createNewCity(@RequestBody City newCity) {
+        ResponseEntity<?> responseEntity;
+        Optional<City> city = service.findByCityName(newCity.getName());
+        if (city.isPresent()) {
+            responseEntity = new ResponseEntity<>("This city is already exists", HttpStatus.BAD_REQUEST);
+        } else {
+            if (newCity.getName() == null || newCity.getText() == null ||
+                    newCity.getName().isBlank() || newCity.getText().isBlank()) {
+                responseEntity = new ResponseEntity<>("Please, insert a correct data!", HttpStatus.BAD_REQUEST);
+            } else {
+                service.createNewCity(newCity);
+                responseEntity = new ResponseEntity<>(newCity, HttpStatus.OK);
+                logger.info("New city: " + newCity);
+            }
+        }
+        return responseEntity;
     }
 
     @PutMapping("/city/{id}")
@@ -50,10 +63,15 @@ public class CityController {
                                         @RequestBody City city) {
         ResponseEntity<?> responseEntity;
         if (service.isExists(id)) {
-            service.updateCity(id, city);
-            responseEntity = new ResponseEntity<>(city, HttpStatus.OK);
-            logger.info("Update city ID=" + id + " " + city);
-        } else responseEntity = new ResponseEntity<>("City with id=" + id + " not exist", HttpStatus.NOT_FOUND);
+            if (city.getName() != null && !city.getName().isBlank() &&
+                    city.getText() != null && !city.getText().isBlank()) {
+                service.updateCity(id, city);
+                responseEntity = new ResponseEntity<>(city, HttpStatus.OK);
+                logger.info("Update city ID=" + id + " " + city);
+            } else {
+                responseEntity = new ResponseEntity<>("Please, insert a correct data!", HttpStatus.BAD_REQUEST);
+            }
+        } else responseEntity = new ResponseEntity<>("City with id=" + id + " not exists", HttpStatus.NOT_FOUND);
         return responseEntity;
     }
 
