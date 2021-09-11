@@ -30,8 +30,8 @@ public class CityController {
     @GetMapping("/city/{cityId}")
     public ResponseEntity<?> getCity(@PathVariable("cityId") int cityId) {
         ResponseEntity<?> responseEntity;
-        Optional<City> city = Optional.of(service.getCityById(cityId));
-        if (city.isPresent()) {
+        if (service.isExists(cityId)){
+        City city = service.getCityById(cityId);
             responseEntity = new ResponseEntity<>(city, HttpStatus.OK);
         } else {
             responseEntity = new ResponseEntity<>("City with id=" + cityId + " not exist", HttpStatus.NOT_FOUND);
