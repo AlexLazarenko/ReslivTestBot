@@ -4,11 +4,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-@Entity(name = "cityData")
+@Entity
+@Table(name = "city_data", schema = "city_data")
 public class City implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GenericGenerator(name = "cityId", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long cityId;
     @Column

@@ -4,6 +4,8 @@ import by.resliv.bot.pojo.City;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,13 +16,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.Optional;
 
 @Component
+@PropertySource("classpath:bot.properties")
 public class BotService extends TelegramLongPollingBot {
 
     private static final Logger logger = LogManager.getLogger(BotService.class);
 
-    private static final String USER_NAME = "@AlexLazarenkoTestBot";
+    @Value("${bot.userName}")
+    private String botUserName;
 
-    private static final String BOT_TOKEN = "1965463710:AAFI0pLrJh0f7JuHYBiu-wXmG6Dyuae7WzU";
+    @Value("${bot.token}")
+    private String botToken;
 
     private static final String NO_SUCH_CITY = "Sorry! No such city in our base!";
 
@@ -29,20 +34,20 @@ public class BotService extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return USER_NAME;
+        return botUserName;
     }
 
     @Override
     public String getBotToken() {
-        return BOT_TOKEN;
+        return botToken;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        Optional<City> thatCity = Optional.empty();
+        Optional<City> thatCity;
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            if (message.hasText()&&!message.isCommand()) {
+            if (message.hasText() && !message.isCommand()) {
                 String text = message.getText();
                 thatCity = service.findByCityName(text);
                 try {
